@@ -25,7 +25,10 @@ export default function SignInPage () {
         promise.then(() => {
             navigate('/');
         });
-        promise.catch(erro => console.log(erro))
+        promise.catch(erro => { 
+            alert(erro.response.data.message);
+            setDisable(false);
+        })
     }
     
     return (
