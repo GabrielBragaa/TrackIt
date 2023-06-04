@@ -4,6 +4,7 @@ import HabitsPage from './pages/HabitsPage/HabitsPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { InfoContext } from './contexts/InfoContext';
+import TodayPage from './pages/TodayPage/TodayPage';
 
 export default function App() {
 
@@ -19,6 +20,7 @@ export default function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/cadastro' element={<SignInPage />} />
           <Route path='/habitos' element={<HabitsPage addHabit={addHabit} setAddHabit={setAddHabit} />} />
+          <Route path='/hoje' element={<TodayPage />} />
         </Routes>
       </InfoContext.Provider>
     </BrowserRouter>
