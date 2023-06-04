@@ -26,10 +26,13 @@ export default function HomePage() {
 
             setToken(response.data.token);
             setProfileImage(response.data.image);
-            navigate('/habitos');
+            navigate('/hoje');
         })
 
-        promise.catch((error) => console.log(error))
+        promise.catch((error) => { 
+            alert(error.response.data.message)
+            setDisable(false);
+        })
     }
 
     return (
