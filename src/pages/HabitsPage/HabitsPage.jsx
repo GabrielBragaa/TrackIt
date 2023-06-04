@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import eu from '../../assets/eu.jpg';
 import logoBranca from '../../assets/TrackIt.png';
 import ellipse from '../../assets/Ellipse 2.svg';
 import trash from '../../assets/trash.svg';
 import { Reset } from '../../css/Reset';
 import { useState } from "react";
 import { weekdays } from "../../constants/weekdays";
-
+import { InfoContext } from "../../contexts/InfoContext";
+import { useNavigate } from "react-router-dom";
 
 export default function HabitsPage(props) {
 
@@ -14,6 +14,7 @@ export default function HabitsPage(props) {
     const [selectedDays, setSelectedDays] = useState([]);
     const [habitName, setHabitName] = useState('');
     let [habits, setHabits] = useState([]);
+    const {profileImage} = InfoContext;
 
     function addDay(id) {
         if(!selectedDays.includes(id)) {
@@ -59,7 +60,7 @@ export default function HabitsPage(props) {
             <Reset/>
             <SCHeader>
                 <img src={logoBranca} className="logo" />
-                <img src={eu} className="profile-pic" />
+                <img src={profileImage} className="profile-pic" />
             </SCHeader>
             <SCBody>
                 <SCHabits>

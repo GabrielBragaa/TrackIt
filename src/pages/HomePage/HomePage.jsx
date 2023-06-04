@@ -20,9 +20,14 @@ export default function HomePage() {
 
         const promise = axios.post(url, body);
 
-        promise.then((go) => {
-            console.log(go)
+        promise.then((response) => {
+            alert('Login feito com sucesso!');
+            setToken(response.data.token);
+            setProfileImage(response.data.image);
+            navigate('/habitos');
         })
+
+        promise.catch((error) => console.log(error))
     }
 
     return (
