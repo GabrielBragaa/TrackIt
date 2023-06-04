@@ -9,6 +9,7 @@ import { InfoContext } from "../../contexts/InfoContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
+import Header from "../../components/Header";
 
 export default function HabitsPage(props) {
 
@@ -85,7 +86,7 @@ export default function HabitsPage(props) {
     }
 
     function deleteHabit(id) {
-
+        
         const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, auth)
         
         console.log(promise)
@@ -104,10 +105,7 @@ export default function HabitsPage(props) {
     return (
         <> 
             <Reset/>
-            <SCHeader>
-                <img src={logoBranca} className="logo" />
-                <img src={profileImage} className="profile-pic" />
-            </SCHeader>
+            <Header/>
             <SCBody>
                 <SCHabits>
                     <p>Meus hábitos</p>
@@ -176,30 +174,6 @@ export default function HabitsPage(props) {
     )
 }
 
-
-const SCHeader = styled.header `
-    box-sizing: border-box;
-    width: 100%;
-    height: 70px;
-    background: #126BA5;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 18px 0 18px;
-
-    .profile-pic {
-        width: 51px;
-        height: 51px;
-        border-radius: 98.5px;
-    }
-
-    .logo {
-        width: 95px;
-        height: 32px;
-    }
-
-`
 
 const SCBody = styled.div `
     display: flex;
