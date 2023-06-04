@@ -3,18 +3,37 @@ import logoBranca from '../../assets/TrackIt.png';
 import ellipse from '../../assets/Ellipse 2.svg';
 import trash from '../../assets/trash.svg';
 import { Reset } from '../../css/Reset';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { weekdays } from "../../constants/weekdays";
 import { InfoContext } from "../../contexts/InfoContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect } from "react";
 
 export default function HabitsPage(props) {
 
     const {addHabit, setAddHabit} = props;
     const [selectedDays, setSelectedDays] = useState([]);
     const [habitName, setHabitName] = useState('');
-    let [habits, setHabits] = useState([]);
-    const {profileImage} = InfoContext;
+    const {profileImage, token, habits, setHabits} = useContext(InfoContext);
+    const auth = {
+        headers:{
+            'Authorization': `Bearer ${token}`
+        }
+    };
+
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    };
+
+    useEffect(() => {
+        const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+        const promise = axios.get(url, auth);
+
+        promise.then(response => {
+                setHabits(response.data);
+        });
+    }, [])
 
     function addDay(id) {
         if(!selectedDays.includes(id)) {
@@ -41,18 +60,45 @@ export default function HabitsPage(props) {
             return;
         }
 
-        if(habitName !== '') {
-            habits.push({name: {habitName}, days: {selectedDays}});
-            setHabits(habits);
-            setHabitName('');
-            setSelectedDays('');
-        }
+        const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+
+        const body = {name: habitName, days: selectedDays};
+
+        const promise = axios.post(url, body, auth);
+
+        promise.then(() => {
+            alert('Seu hábito foi salvo!');
+            listHabits();
+        })
+    }
+
+    function listHabits() {
+        const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
+        const promise = axios.get(url, auth);
+
+        promise.then(response => {
+                setHabits(response.data);
+                setHabitName('');
+                setSelectedDays([]);
+                console.log(habits)
+        });
     }
 
     function deleteHabit(id) {
-        habits.splice(id, 1);
-        let newList = [...habits];
-        setHabits(newList)
+
+        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, auth)
+        
+        console.log(promise)
+
+        promise.then(response => {
+            const get = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', auth);
+            get.then(newList => {
+                setHabits(newList.data);
+                console.log(newList);
+            })
+        })
+
+        promise.catch(erro => console.log(erro))
     }
 
     return (
@@ -105,13 +151,13 @@ export default function HabitsPage(props) {
                             {habits.map((h, id) => ( 
                             <SCSettledHabit key={id}>
                                 <div className="title">
-                                    <p>{h.name.habitName}</p>
+                                    <p>{h.name}</p>
                                     <img src={trash} onClick={() => deleteHabit(id)} />
                                 </div>
                                 <div className="days">
                                     {weekdays.map((day, id) => <button type="button" key={id} className="day" 
-                                    disabled style={{backgroundColor: h.days.selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF', 
-                                    color: h.days.selectedDays.includes(id) ? '#ffffff' : '#dbdbdb'}} >{day}</button>)}
+                                    disabled style={{backgroundColor: h.days.includes(id) ? '#CFCFCF' : '#FFFFFF', 
+                                    color: h.days.includes(id) ? '#ffffff' : '#dbdbdb'}} >{day}</button>)}
                                 </div>
                             </SCSettledHabit>))}
                         </SCList>
@@ -159,7 +205,7 @@ const SCBody = styled.div `
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background: #E5E5E5;
     box-sizing: border-box;
     align-content: center;
@@ -221,6 +267,7 @@ const SCList = styled.div `
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    margin-bottom: 115px;
 
     p {
         font-family: 'Lexend Deca';

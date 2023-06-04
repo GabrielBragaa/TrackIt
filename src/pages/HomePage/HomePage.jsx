@@ -25,6 +25,7 @@ export default function HomePage() {
             setToken(response.data.token);
             setProfileImage(response.data.image);
             navigate('/habitos');
+            console.log(token)
         })
 
         promise.catch((error) => console.log(error))
