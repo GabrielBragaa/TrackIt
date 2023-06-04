@@ -28,14 +28,24 @@ export default function HabitsPage(props) {
         }
     }
 
-
-    function CreateHabit(e) {
+    function createHabit(e) {
         e.preventDefault();
-        habits.push({name: {habitName}, days: {selectedDays}});
-        setHabits(habits);
-        setHabitName('');
-        setSelectedDays('');
-        console.log(habits)
+        while(habitName === '') {
+            alert('Preencha o nome do hábito.');
+            return;
+        }
+
+        while(selectedDays.length === 0) {
+            alert('Preencha o(s) dia(s) a repetir o hábito.');
+            return;
+        }
+
+        if(habitName !== '') {
+            habits.push({name: {habitName}, days: {selectedDays}});
+            setHabits(habits);
+            setHabitName('');
+            setSelectedDays('');
+        }
     }
 
     function deleteHabit(id) {
@@ -63,8 +73,8 @@ export default function HabitsPage(props) {
                 )}
                 {addHabit && (habits.length === 0) && (
                     <>
-                        <SCCreateHabit onSubmit={CreateHabit}>
-                            <input type="text" placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+                        <SCCreateHabit onSubmit={createHabit}>
+                            <input type="text" placeholder="nome do hábito" value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
                                 {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
@@ -80,7 +90,7 @@ export default function HabitsPage(props) {
                 )}
                 {habits.length !== 0 && (
                     <>
-                        <SCCreateHabit onSubmit={CreateHabit}>
+                        <SCCreateHabit onSubmit={createHabit}>
                             <input type="text" placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
                                 {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
@@ -150,6 +160,8 @@ const SCBody = styled.div `
     width: 100%;
     height: 100vh;
     background: #E5E5E5;
+    box-sizing: border-box;
+    align-content: center;
 
     .nohabit {
         display: flex;
@@ -203,11 +215,12 @@ const SCHabits = styled.div `
 `
 
 const SCList = styled.div `
-    margin: 28px 0 0 20px;
     gap: 10px;
     width: 100%;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+
     p {
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -354,6 +367,7 @@ const SCSettledHabit = styled.div `
     gap: 8px;
     padding: 0 18px;
     box-sizing: border-box;
+    margin: 0 auto;
 
     .days {
         display: flex;
