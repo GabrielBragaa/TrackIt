@@ -8,12 +8,12 @@ export default function Footer() {
     
     return (
         <SCFooter>
-            <p>Hábitos</p>
+            <p onClick={() => navigate('/habitos')}>Hábitos</p>
             <div className="progress">
                 <p onClick={() => navigate('/hoje')}>Hoje</p>
                 <img src={ellipse} />
             </div>
-            <p>Histórico</p>
+            <p onClick={() => navigate('/historico')} >Histórico</p>
         </SCFooter>
     )
 }

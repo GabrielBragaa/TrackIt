@@ -1,9 +1,58 @@
+import { useContext } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { Reset } from "../../css/Reset";
 import styled from "styled-components";
+import { InfoContext } from "../../contexts/InfoContext";
+import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
+import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
+
 
 export default function TodayPage() {
+
+    const {token} = useContext(InfoContext);
+    const [todayHabit, setTodayHabit] = useState([]);
+    const [clicked, setClicked] = useState([]);
+    const auth = {
+        headers:{
+            'Authorization': `Bearer ${token}`
+        }
+    };
+    let day = dayjs().locale('pt-br').format('dddd, DD/MM');
+    day = day.charAt(0).toUpperCase() + day.slice(1);
+    
+    useEffect(() => {
+        const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today';
+        const promise = axios.get(url, auth);
+        promise.then(response => {
+            setTodayHabit(response.data)
+        })
+    }, []);
+
+    function addClick(id) {
+        if(!clicked.includes(id)) {
+                const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`;
+                const promise = axios.post(url, {}, auth);
+                promise.then(response => {
+                    setClicked([...clicked, id])
+                    console.log(response)
+                })
+        } else {
+            const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+            const promise = axios.post(url, {}, auth);
+            promise.then(response => { 
+                let newClick = clicked.filter(click => {
+                    if(click !== id) {
+                        return true;
+                    }
+                })
+                setClicked(newClick)
+            })
+        }
+    }
 
     return (
         <>
@@ -11,20 +60,26 @@ export default function TodayPage() {
             <Header/>
             <SCBody>
                 <SCTitle>
-                    <p className="day">Domingo, 04/06</p>
-                    <p className="habitDone">Nenhum hábito concluído ainda</p>
+                    <p className="day">{day}</p>
+                    {todayHabit.length === 0 && (
+                        <p className="habitDone">Nenhum hábito concluído ainda</p>
+                    )}
                 </SCTitle>
                 <SCHabitsContainer>
-                    <SCHabit>
-                        <div className="left">
-                            <p className="habitTitle">Ler 1 livro</p>
-                            <p className="currentSequence">Sequência atual: 4 dias</p>
-                            <p className="record">Seu recorde: 3 dias</p>
-                        </div>
-                        <div className="right">
-                            <ion-icon name="checkbox"></ion-icon>
-                        </div>
-                    </SCHabit>
+                    {todayHabit.length !== 0 && (
+                        todayHabit.map((h, id) => (
+                            <SCHabit key={id}>
+                                <div className="left">
+                                    <p className="habitTitle">{h.name}</p>
+                                    <p className="currentSequence">Sequência atual: 4 dias</p>
+                                    <p className="record">Seu recorde: 3 dias</p>
+                                </div>
+                                <div className="right" onClick={() => addClick(id)}>
+                                    <ion-icon name="checkbox" style={{color: clicked.includes(id) ? '#8FC549' : '#E7E7E7'}} ></ion-icon>
+                                </div>
+                        </SCHabit>
+                        ))
+                    )}
                 </SCHabitsContainer>
             </SCBody>
             <Footer/>
@@ -68,6 +123,7 @@ const SCHabitsContainer = styled.div `
     display: flex;
     flex-direction: column;
     width: 90%;
+    gap: 10px;
 `
 
 const SCHabit = styled.div `
@@ -102,6 +158,5 @@ const SCHabit = styled.div `
     ion-icon {
         width: 90px;
         height: 90px;
-        color: #E7E7E7;
     }
 `
