@@ -13,10 +13,11 @@ export default function App() {
   const [token, setToken] = useState('');
   const [profileImage, setProfileImage] = useState('');
   const [habits, setHabits] = useState([]);
+  const [percentage, setPercentage] = useState(0);
 
   return (
     <BrowserRouter>
-      <InfoContext.Provider value={{profileImage, setProfileImage, token, setToken, habits, setHabits}}>
+      <InfoContext.Provider value={{profileImage, setProfileImage, token, setToken, habits, setHabits, percentage, setPercentage}}>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/cadastro' element={<SignInPage />} />

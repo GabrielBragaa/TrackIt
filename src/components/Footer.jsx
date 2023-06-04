@@ -1,17 +1,21 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-import ellipse from '../assets/Ellipse 2.svg';
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import 'react-circular-progressbar/dist/styles.css';
+import { InfoContext } from "../contexts/InfoContext";
+import { useContext } from "react";
 
 export default function Footer() {
     
+    const {percentage} = useContext(InfoContext);
     const navigate = useNavigate();
     
     return (
         <SCFooter>
             <p onClick={() => navigate('/habitos')}>Hábitos</p>
-            <div className="progress">
-                <p onClick={() => navigate('/hoje')}>Hoje</p>
-                <img src={ellipse} />
+            <div className="progress" onClick={() => navigate('/hoje')}>
+                <CircularProgressbar value={percentage} text='Hoje' background backgroundPadding={6} 
+                styles={buildStyles({backgroundColor: '#52B6FF', textColor: '#ffffff', pathColor: '#ffffff', trailColor: 'transparent'})}/>
             </div>
             <p onClick={() => navigate('/historico')} >Histórico</p>
         </SCFooter>
@@ -39,19 +43,9 @@ const SCFooter = styled.footer `
 
     .progress {
         display: flex;
-
-        img {
-            position: absolute;
-            bottom: 15px;
-            right: 150px;
-        }
-
-        p {
-            position: absolute;
-            bottom: 50px;
-            right: 173px;
-            z-index: 1;
-            color: #ffffff;
-        }
+        width: 91px;
+        height: 91px;
+        position: relative;
+        bottom: 55px;
     }
 `
