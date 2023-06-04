@@ -179,7 +179,7 @@ export default function HabitsPage(props) {
                             <SCSettledHabit key={id}>
                                 <div className="title">
                                     <p>{h.name}</p>
-                                    <img src={trash} onClick={() => deleteHabit(id)} />
+                                    <img src={trash} onClick={() => deleteHabit(h.id)} />
                                 </div>
                                 <div className="days">
                                     {weekdays.map((day, id) => <button type="button" key={id} className="day" 

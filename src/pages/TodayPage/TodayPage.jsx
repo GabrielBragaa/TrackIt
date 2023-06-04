@@ -74,8 +74,8 @@ export default function TodayPage() {
                                     <p className="currentSequence">Sequência atual: 4 dias</p>
                                     <p className="record">Seu recorde: 3 dias</p>
                                 </div>
-                                <div className="right" onClick={() => addClick(id)}>
-                                    <ion-icon name="checkbox" style={{color: clicked.includes(id) ? '#8FC549' : '#E7E7E7'}} ></ion-icon>
+                                <div className="right" onClick={() => addClick(h.id)}>
+                                    <ion-icon name="checkbox" style={{color: clicked.includes(h.id) ? '#8FC549' : '#E7E7E7'}} ></ion-icon>
                                 </div>
                         </SCHabit>
                         ))
