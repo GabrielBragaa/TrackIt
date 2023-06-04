@@ -42,7 +42,7 @@ export default function HomePage() {
                     <button type='submit' disabled={disable}>Entrar</button>
                 )}
                 {disable && (
-                    <button><ThreeDots 
+                    <button disabled={disable}><ThreeDots 
                     height="80" 
                     width="80" 
                     radius="9"

@@ -9,6 +9,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function HabitsPage(props) {
 
@@ -16,7 +17,7 @@ export default function HabitsPage(props) {
     const [selectedDays, setSelectedDays] = useState([]);
     const [habitName, setHabitName] = useState('');
     const {profileImage, token, habits, setHabits} = useContext(InfoContext);
-    const navigate = useNavigate();
+    const [disable, setDisable] = useState([false]);
 
     const auth = {
         headers:{
@@ -24,7 +25,9 @@ export default function HabitsPage(props) {
         }
     };
 
+    
     useEffect(() => {
+        setDisable(false)
         const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
         const promise = axios.get(url, auth);
 
@@ -48,6 +51,7 @@ export default function HabitsPage(props) {
 
     function createHabit(e) {
         e.preventDefault();
+        setDisable(true);
         while(habitName === '') {
             alert('Preencha o nome do hábito.');
             return;
@@ -65,7 +69,6 @@ export default function HabitsPage(props) {
         const promise = axios.post(url, body, auth);
 
         promise.then(() => {
-            alert('Seu hábito foi salvo!');
             listHabits();
         })
     }
@@ -73,6 +76,7 @@ export default function HabitsPage(props) {
     function listHabits() {
         const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits';
         const promise = axios.get(url, auth);
+        setDisable(false);
 
         promise.then(response => {
                 setHabits(response.data);
@@ -116,13 +120,27 @@ export default function HabitsPage(props) {
                 {addHabit && (habits.length === 0) && (
                     <>
                         <SCCreateHabit onSubmit={createHabit}>
-                            <input type="text" placeholder="nome do hábito" value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
+                            <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
                                 {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
-                                <button type="reset" className="cancel" onClick={() => setAddHabit(false)}>Cancelar</button>
-                                <button type="submit" className="save">Salvar</button>
+                                <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
+                                {!disable && (
+                                    <button type="submit" disabled={disable} className="save">Salvar</button>
+                                )}
+                                {disable && (
+                                    <button type="submit" disabled={disable} className="save"><ThreeDots 
+                                    height="40" 
+                                    width="40" 
+                                    radius="9"
+                                    color="#ffffff" 
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={true}
+                                     /></button>
+                                )}
                             </div>
                         </SCCreateHabit>
                         <div className="nohabit">
@@ -133,13 +151,27 @@ export default function HabitsPage(props) {
                 {habits.length !== 0 && (
                     <>
                         <SCCreateHabit onSubmit={createHabit}>
-                            <input type="text" placeholder="nome do hábito" value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+                            <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
                                 {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
-                                <button type="reset" className="cancel" onClick={() => setAddHabit(false)}>Cancelar</button>
-                                <button type="submit" className="save">Salvar</button>
+                                <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
+                                {!disable && (
+                                    <button type="submit" disabled={disable} className="save">Salvar</button>
+                                )}
+                                {disable && (
+                                    <button type="submit" disabled={disable} className="save"><ThreeDots 
+                                    height="40" 
+                                    width="40" 
+                                    radius="9"
+                                    color="#ffffff" 
+                                    ariaLabel="three-dots-loading"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={true}
+                                     /></button>
+                                )}
                             </div>
                         </SCCreateHabit>
                         <SCList>
@@ -326,6 +358,9 @@ const SCCreateHabit = styled.form `
         text-align: center;
         color: #FFFFFF;
         border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
 `
