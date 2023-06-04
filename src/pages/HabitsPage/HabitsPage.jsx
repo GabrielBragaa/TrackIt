@@ -16,7 +16,7 @@ export default function HabitsPage(props) {
     const {addHabit, setAddHabit} = props;
     const [selectedDays, setSelectedDays] = useState([]);
     const [habitName, setHabitName] = useState('');
-    const {profileImage, token, habits, setHabits} = useContext(InfoContext);
+    const {setPercentage, token, habits, setHabits} = useContext(InfoContext);
     const [disable, setDisable] = useState([false]);
 
     const auth = {
@@ -112,6 +112,10 @@ export default function HabitsPage(props) {
                     <p>Meus hábitos</p>
                     <button onClick={() => setAddHabit(true)}>+</button>
                 </SCHabits>
+                {habits.length === 0 && (
+                    setPercentage(0)
+                )}
+                
                 {!addHabit && (habits.length === 0) && (
                     <div className="nohabit">
                         <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>

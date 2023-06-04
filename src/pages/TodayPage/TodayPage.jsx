@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 export default function TodayPage() {
 
-    const {token} = useContext(InfoContext);
+    const {token, percentage, setPercentage} = useContext(InfoContext);
     const [todayHabit, setTodayHabit] = useState([]);
     const [clicked, setClicked] = useState([]);
     const auth = {
@@ -38,7 +38,7 @@ export default function TodayPage() {
                 const promise = axios.post(url, {}, auth);
                 promise.then(response => {
                     setClicked([...clicked, id])
-                    console.log(response)
+                    setPercentage(((clicked.length + 1) / (todayHabit.length)) * 100);
                 })
         } else {
             const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
@@ -50,6 +50,7 @@ export default function TodayPage() {
                     }
                 })
                 setClicked(newClick)
+                setPercentage(percentage - ((clicked.length + 1) / (todayHabit.length)) * 100);
             })
         }
     }
