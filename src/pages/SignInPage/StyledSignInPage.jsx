@@ -55,6 +55,9 @@ export const SCLogin = styled.form `
         text-align: center;
         border: none;
         color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `
 
