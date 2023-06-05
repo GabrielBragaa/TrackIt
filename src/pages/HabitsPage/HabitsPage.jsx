@@ -54,11 +54,13 @@ export default function HabitsPage(props) {
         setDisable(true);
         while(habitName === '') {
             alert('Preencha o nome do hábito.');
+            setDisable(false)
             return;
         }
 
         while(selectedDays.length === 0) {
             alert('Preencha o(s) dia(s) a repetir o hábito.');
+            setDisable(false)
             return;
         }
 
@@ -82,26 +84,26 @@ export default function HabitsPage(props) {
                 setHabits(response.data);
                 setHabitName('');
                 setSelectedDays([]);
-                console.log(habits)
         });
     }
 
     function deleteHabit(id) {
-        
-        const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, auth)
-        
-        console.log(promise)
+        let answer = window.confirm('Deseja deletar o hábito?')
 
-        promise.then(response => {
-            const get = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', auth);
-            get.then(newList => {
-                setHabits(newList.data);
-                console.log(newList);
+        if(answer) {
+            const promise = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, auth)
+
+            promise.then(response => {
+                const get = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', auth);
+                get.then(newList => {
+                    setHabits(newList.data);
+                    console.log(newList);
+                })
             })
-        })
 
-        promise.catch(erro => console.log(erro))
+            promise.catch(erro => console.log(erro))
     }
+        }
 
     return (
         <> 
@@ -126,7 +128,7 @@ export default function HabitsPage(props) {
                         <SCCreateHabit onSubmit={createHabit}>
                             <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
-                                {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
+                                {weekdays.map((day, id) => <button type="button" disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
                                 <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
@@ -157,7 +159,7 @@ export default function HabitsPage(props) {
                         <SCCreateHabit onSubmit={createHabit}>
                             <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
-                                {weekdays.map((day, id) => <button type="button" style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
+                                {weekdays.map((day, id) => <button type="button" disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
                                 <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>

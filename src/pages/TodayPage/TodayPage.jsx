@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 export default function TodayPage() {
 
-    const {token, percentage, setPercentage} = useContext(InfoContext);
+    const {token, percentage, setPercentage, habits} = useContext(InfoContext);
     const [todayHabit, setTodayHabit] = useState([]);
     const [clicked, setClicked] = useState([]);
     const auth = {
@@ -21,6 +21,7 @@ export default function TodayPage() {
             'Authorization': `Bearer ${token}`
         }
     };
+    let number = 3;
     let day = dayjs().locale('pt-br').format('dddd, DD/MM');
     day = day.charAt(0).toUpperCase() + day.slice(1);
     
@@ -36,21 +37,21 @@ export default function TodayPage() {
         if(!clicked.includes(id)) {
                 const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`;
                 const promise = axios.post(url, {}, auth);
-                promise.then(response => {
+                promise.then(() => {
                     setClicked([...clicked, id])
                     setPercentage(((clicked.length + 1) / (todayHabit.length)) * 100);
                 })
         } else {
             const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
             const promise = axios.post(url, {}, auth);
-            promise.then(response => { 
+            promise.then(() => { 
                 let newClick = clicked.filter(click => {
                     if(click !== id) {
                         return true;
                     }
                 })
                 setClicked(newClick)
-                setPercentage(percentage - ((clicked.length + 1) / (todayHabit.length)) * 100);
+                setPercentage(percentage - (percentage/clicked.length));
             })
         }
     }
@@ -62,8 +63,11 @@ export default function TodayPage() {
             <SCBody>
                 <SCTitle>
                     <p className="day">{day}</p>
-                    {todayHabit.length === 0 && (
+                    {percentage === 0 || percentage < 0 && (
                         <p className="habitDone">Nenhum hábito concluído ainda</p>
+                    )}
+                    {percentage !== 0 && percentage > 0 && (
+                        <p className="habitDone" style={{color: '#8FC549'}}>{percentage}% dos hábitos concluídos</p>
                     )}
                 </SCTitle>
                 <SCHabitsContainer>
@@ -72,8 +76,8 @@ export default function TodayPage() {
                             <SCHabit key={id}>
                                 <div className="left">
                                     <p className="habitTitle">{h.name}</p>
-                                    <p className="currentSequence">Sequência atual: 4 dias</p>
-                                    <p className="record">Seu recorde: 3 dias</p>
+                                    <p className="currentSequence" style={{color: clicked.includes(h.id) ? '#8FC549' : '#666666'}}>Sequência atual: {habits[id].days.length} dias</p>
+                                    <p className="record" style={{color: (habits[id].days.length) >= number ? '#8FC549' : '#666666'}} >Seu recorde: {number} dias</p>
                                 </div>
                                 <div className="right" onClick={() => addClick(h.id)}>
                                     <ion-icon name="checkbox" style={{color: clicked.includes(h.id) ? '#8FC549' : '#E7E7E7'}} ></ion-icon>
