@@ -62,24 +62,24 @@ export default function TodayPage() {
             <Header/>
             <SCBody>
                 <SCTitle>
-                    <p className="day">{day}</p>
+                    <p className="day" data-test='today' >{day}</p>
                     {percentage === 0 || percentage < 0 && (
-                        <p className="habitDone">Nenhum hábito concluído ainda</p>
+                        <p className="habitDone" data-test='today-counter' >Nenhum hábito concluído ainda</p>
                     )}
                     {percentage !== 0 && percentage > 0 && (
-                        <p className="habitDone" style={{color: '#8FC549'}}>{percentage}% dos hábitos concluídos</p>
+                        <p className="habitDone" data-test='today-counter' style={{color: '#8FC549'}}>{percentage}% dos hábitos concluídos</p>
                     )}
                 </SCTitle>
                 <SCHabitsContainer>
                     {todayHabit.length !== 0 && (
                         todayHabit.map((h, id) => (
-                            <SCHabit key={id}>
+                            <SCHabit key={id} data-test='today-habit-container' >
                                 <div className="left">
-                                    <p className="habitTitle">{h.name}</p>
-                                    <p className="currentSequence" style={{color: clicked.includes(h.id) ? '#8FC549' : '#666666'}}>Sequência atual: {habits[id].days.length} dias</p>
-                                    <p className="record" style={{color: (habits[id].days.length) >= number ? '#8FC549' : '#666666'}} >Seu recorde: {number} dias</p>
+                                    <p className="habitTitle" data-test='today-habit-name' >{h.name}</p>
+                                    <p className="currentSequence" data-test='today-habit-sequence' style={{color: clicked.includes(h.id) ? '#8FC549' : '#666666'}}>Sequência atual: {habits[id].days.length} dias</p>
+                                    <p className="record" data-test='today-habit-record' style={{color: (habits[id].days.length) >= number ? '#8FC549' : '#666666'}} >Seu recorde: {number} dias</p>
                                 </div>
-                                <div className="right" onClick={() => addClick(h.id)}>
+                                <div className="right" onClick={() => addClick(h.id)} data-test='today-habit-check-btn' >
                                     <ion-icon name="checkbox" style={{color: clicked.includes(h.id) ? '#8FC549' : '#E7E7E7'}} ></ion-icon>
                                 </div>
                         </SCHabit>

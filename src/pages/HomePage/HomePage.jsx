@@ -39,10 +39,10 @@ export default function HomePage() {
         <SCBody>
             <img src={logo}></img>
             <SCLogin onSubmit={login}>
-                <input type='email' placeholder='email' disabled={disable} value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder='senha' disabled={disable} value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input type='email' placeholder='email' disabled={disable} value={email} onChange={(e) => setEmail(e.target.value)} data-test='email-input' />
+                <input type="password" placeholder='senha' disabled={disable} value={password} onChange={(e) => setPassword(e.target.value)} data-test='password-input' />
                 {!disable && (
-                    <button type='submit' disabled={disable}>Entrar</button>
+                    <button type='submit' disabled={disable} data-test='login-btn' >Entrar</button>
                 )}
                 {disable && (
                     <button disabled={disable}><ThreeDots 
@@ -57,7 +57,7 @@ export default function HomePage() {
                      /></button>
                 )}
             </SCLogin>
-            <Link to='/cadastro' >
+            <Link to='/cadastro' data-test='signup-link' >
                 <SCParagraph>Não tem uma conta? Cadastre-se!</SCParagraph>
             </Link>
         </SCBody>

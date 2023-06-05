@@ -35,12 +35,12 @@ export default function SignInPage () {
         <SCBody>
             <img src={logo}></img>
             <SCLogin onSubmit={sendInfo}>
-                <input type='email' disabled={disable} placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" disabled={disable} placeholder='senha' value={password} onChange={(e) => setPassword(e.target.value)} />
-                <input type="text" disabled={disable} placeholder='nome' value={name} onChange={(e) => setName(e.target.value)} />
-                <input type="url" disabled={disable} placeholder='foto' name="pic" id="pic" value={image} onChange={(e) => setImage(e.target.value)} />
+                <input type='email' disabled={disable} placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} data-test='email-input' />
+                <input type="password" disabled={disable} placeholder='senha' value={password} onChange={(e) => setPassword(e.target.value)} data-test='password-input' />
+                <input type="text" disabled={disable} placeholder='nome' value={name} onChange={(e) => setName(e.target.value)} data-test='user-name-input' />
+                <input type="url" disabled={disable} placeholder='foto' name="pic" id="pic" value={image} onChange={(e) => setImage(e.target.value)} data-test='user-image-input' />
                 {!disable && (
-                    <button type='submit' disabled={disable}>Cadastrar</button>
+                    <button type='submit' disabled={disable} data-test='signup-btn' >Cadastrar</button>
                 )}
                 {disable && (
                     <button type='submit' disabled={disable}><ThreeDots 
@@ -55,7 +55,7 @@ export default function SignInPage () {
                      /></button>
                 )}
             </SCLogin>
-            <Link to='/' >
+            <Link to='/' data-test='login-link' >
                 <SCParagraph>Já tem uma conta? Faça login!</SCParagraph>
             </Link>
         </SCBody>

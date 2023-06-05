@@ -112,7 +112,7 @@ export default function HabitsPage(props) {
             <SCBody>
                 <SCHabits>
                     <p>Meus hábitos</p>
-                    <button onClick={() => setAddHabit(true)}>+</button>
+                    <button onClick={() => setAddHabit(true)} data-test='habit-create-btn' >+</button>
                 </SCHabits>
                 {habits.length === 0 && (
                     setPercentage(0)
@@ -125,15 +125,15 @@ export default function HabitsPage(props) {
                 )}
                 {addHabit && (habits.length === 0) && (
                     <>
-                        <SCCreateHabit onSubmit={createHabit}>
-                            <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
+                        <SCCreateHabit onSubmit={createHabit} data-test='habit-create-container'>
+                            <input type="text" placeholder="nome do hábito" data-test='habit-name-input' disabled={disable} value={habitName} required onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
-                                {weekdays.map((day, id) => <button type="button" disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
+                                {weekdays.map((day, id) => <button type="button" data-test='habit-day' disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
-                                <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
+                                <button type="reset" className="cancel" data-test='habit-create-cancel-btn' disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
                                 {!disable && (
-                                    <button type="submit" disabled={disable} className="save">Salvar</button>
+                                    <button type="submit" disabled={disable} data-test='habit-create-save-btn' className="save">Salvar</button>
                                 )}
                                 {disable && (
                                     <button type="submit" disabled={disable} className="save"><ThreeDots 
@@ -156,15 +156,15 @@ export default function HabitsPage(props) {
                 )}
                 {habits.length !== 0 && (
                     <>
-                        <SCCreateHabit onSubmit={createHabit}>
-                            <input type="text" placeholder="nome do hábito" disabled={disable} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
+                        <SCCreateHabit onSubmit={createHabit} data-test='habit-create-container'>
+                            <input type="text" placeholder="nome do hábito" data-test='habit-name-input' disabled={disable} value={habitName} onChange={(e) => setHabitName(e.target.value)} />
                             <div className="days">
-                                {weekdays.map((day, id) => <button type="button" disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
+                                {weekdays.map((day, id) => <button type="button" data-test='habit-day' disabled={disable} style={{backgroundColor: selectedDays.includes(id) ? '#CFCFCF' : '#FFFFFF'}} className="day" key={id} onClick={() => addDay(id)}>{day}</button>)}
                             </div>
                             <div className="actions">
-                                <button type="reset" className="cancel" disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
+                                <button type="reset" className="cancel" data-test='habit-create-cancel-btn' disabled={disable} onClick={() => setAddHabit(false)}>Cancelar</button>
                                 {!disable && (
-                                    <button type="submit" disabled={disable} className="save">Salvar</button>
+                                    <button type="submit" disabled={disable} data-test='habit-create-save-btn' className="save">Salvar</button>
                                 )}
                                 {disable && (
                                     <button type="submit" disabled={disable} className="save"><ThreeDots 
@@ -182,12 +182,12 @@ export default function HabitsPage(props) {
                         </SCCreateHabit>
                         <SCList>
                             {habits.map((h, id) => ( 
-                            <SCSettledHabit key={id}>
+                            <SCSettledHabit key={id} data-test='habit-container' >
                                 <div className="title">
-                                    <p>{h.name}</p>
-                                    <img src={trash} onClick={() => deleteHabit(h.id)} />
+                                    <p data-test='habit-name' >{h.name}</p>
+                                    <img src={trash} onClick={() => deleteHabit(h.id)} data-test='habit-delete-btn' />
                                 </div>
-                                <div className="days">
+                                <div className="days" data-test='habit-day' >
                                     {weekdays.map((day, id) => <button type="button" key={id} className="day" 
                                     disabled style={{backgroundColor: h.days.includes(id) ? '#CFCFCF' : '#FFFFFF', 
                                     color: h.days.includes(id) ? '#ffffff' : '#dbdbdb'}} >{day}</button>)}

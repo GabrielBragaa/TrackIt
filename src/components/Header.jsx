@@ -9,9 +9,9 @@ export default function Header() {
     const {profileImage} = useContext(InfoContext);
     
     return (
-        <SCHeader>
+        <SCHeader data-test='header' >
             <img src={logoBranca} className="logo" />
-            <img src={profileImage} className="profile-pic" />
+            <img src={profileImage} className="profile-pic" data-test='avatar' />
         </SCHeader>
     )
 }
